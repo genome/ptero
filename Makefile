@@ -21,7 +21,7 @@ endif
 git-submodule-update:
 	git submodule update --init
 
-$(SUBMODULES): git-submodule-update
+$(SUBMODULES): git-submodule-update verify-github-parameters
 	cd $(CURDIR)/$@ ; \
 	git remote | xargs -n 1 git remote remove; \
 	git remote add $(GITHUB_PULL_REMOTE_NAME) git@github.com/genome/ptero-$(basename $@).git ; \
