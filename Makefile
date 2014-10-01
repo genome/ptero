@@ -25,9 +25,13 @@ $(SUBMODULES): git-submodule-update verify-github-parameters
 	cd $(CURDIR)/$@ ; \
 	git remote | xargs -n 1 git remote remove; \
 	git remote add $(GITHUB_PULL_REMOTE_NAME) git@github.com/genome/ptero-$(basename $@).git ; \
-	git remote add $(GITHUB_PUSH_REMOTE_NAME) git@github.com/$(GITHUB_USERNAME)/ptero-$(basename $@).git
+	git remote add $(GITHUB_PUSH_REMOTE_NAME) git@github.com/$(GITHUB_USERNAME)/ptero-$(basename $@).git ; \
+	git config remote.pushdefault $(GITHUB_PUSH_REMOTE_NAME) ; \
+	git config push.default current
 
 parent-repo-remotes: verify-github-parameters
 	git remote | xargs -n 1 git remote remove; \
 	git remote add $(GITHUB_PULL_REMOTE_NAME) https://github.com/genome/ptero.git ; \
-	git remote add $(GITHUB_PUSH_REMOTE_NAME) https://github.com/$(GITHUB_USERNAME)/ptero.git
+	git remote add $(GITHUB_PUSH_REMOTE_NAME) https://github.com/$(GITHUB_USERNAME)/ptero.git ; \
+	git config remote.pushdefault $(GITHUB_PUSH_REMOTE_NAME) ; \
+	git config push.default current
