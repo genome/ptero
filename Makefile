@@ -25,5 +25,5 @@ git-submodule-update:
 $(SUBMODULES): git-submodule-update
 	cd $(CURDIR)/$@ ; git remote rename origin $(GITHUB_UPSTREAM_REMOTE_NAME) ; git remote add $(GITHUB_ORIGIN_REMOTE_NAME) git@github.com/$(GITHUB_USERNAME)/ptero-$(basename $@).git
 
-parent-repo-remotes:
+parent-repo-remotes: verify-github-parameters
 	git remote add $(GITHUB_UPSTREAM_REMOTE_NAME) https://github.com/genome/ptero.git
