@@ -34,3 +34,16 @@ execute_subcommand() {
     shift 1
     exec "$command_path" "$@"
 }
+
+delegate_to_subcommand() {
+    local command="$1"
+    case "$command" in
+    '' )
+        display_subcommands
+        exit 1
+      ;;
+    * )
+        execute_subcommand $@
+      ;;
+    esac
+}
