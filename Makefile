@@ -29,6 +29,7 @@ $(info Setting remotes and git config for $1)
 @cd $(CURDIR)/$2 ; git remote add $(GITHUB_PUSH_REMOTE) git@github.com:$(GITHUB_USERNAME)/$1.git
 @cd $(CURDIR)/$2 ; git config --replace-all remote.pushdefault $(GITHUB_PUSH_REMOTE)
 @cd $(CURDIR)/$2 ; git config --replace-all push.default current
+@cd $(CURDIR)/$2 ; git fetch --all
 endef
 
 $(SUBMODULES): git-submodule-update verify-github-parameters
