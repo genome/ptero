@@ -44,6 +44,10 @@ export PTERO_COMMON="${PTERO_DIR}/libexec/common-ptero"
 
 command="$1"
 case "$command" in
+help )
+    shift 1
+    exec "$0" "$@" -h
+  ;;
 * )
   command_path="$(command -v "ptero-$command" || true)"
   if [ -z "$command_path" ]; then
