@@ -61,10 +61,12 @@ case "$command" in
     display_subcommands
     exit 1
   ;;
+
 help )
     shift 1
     exec "$0" "$@" -h
   ;;
+
 * )
   command_path="$(command -v "ptero-$command" || true)"
   if [ -z "$command_path" ]; then
@@ -76,4 +78,3 @@ help )
   exec "$command_path" "$@"
   ;;
 esac
-
