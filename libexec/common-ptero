@@ -8,7 +8,9 @@ fi
 
 display_subcommands() {
     local name=$(basename $0)
-    echo "Usage: $(echo $name | sed 's/-/ /g') <SUBCOMMAND> [OPTIONS]" 1>&2
+    local display_name=$(echo $name | sed 's/-/ /g')
+
+    echo "Usage: $display_name <SUBCOMMAND> [OPTIONS]" 1>&2
     echo 1>&2
     echo "Available subcommands:" 1>&2
     local paths=$(echo $PATH | sed 's/:/ /g')
@@ -16,4 +18,19 @@ display_subcommands() {
             | xargs -n 1 basename | sed s/^${name}-//); do
         echo "  $SC" 1>&2
     done
+}
+
+execute_subcommand() {
+    local command=$1
+    local name=$(basename $0)
+    local display_name=$(echo $name | sed 's/-/ /g')
+
+    command_path="$(command -v "$name-$command" || true)"
+    if [ -z "$command_path" ]; then
+        echo "$display_name: no such command \`$command'" >&2
+        exit 1
+    fi
+
+    shift 1
+    exec "$command_path" "$@"
 }
