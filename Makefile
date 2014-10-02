@@ -35,4 +35,4 @@ $(SUBMODULES): git-submodule-update verify-github-parameters
 	$(call git-repo-setup,ptero-$(lastword $(subst /, ,$@)),$@)
 
 parent-repo-remotes: verify-github-parameters
-	$(call git-repo-setup,ptero,.)
+	$(call git-repo-setup,ptero)
