@@ -5,3 +5,15 @@ if [ -n "$PTERO_DEBUG" ]; then
   export PS4='+ [${BASH_SOURCE##*/}:${LINENO}] '
   set -x
 fi
+
+display_subcommands() {
+    local name=$(basename $0)
+    echo "Usage: $(echo $name | sed 's/-/ /g') <SUBCOMMAND> [OPTIONS]" 1>&2
+    echo 1>&2
+    echo "Available subcommands:" 1>&2
+    local paths=$(echo $PATH | sed 's/:/ /g')
+    for SC in $(find $paths -maxdepth 1 -name "$name-*" -not -name "$name-*-*"\
+            | xargs -n 1 basename | sed s/^${name}-//); do
+        echo "  $SC" 1>&2
+    done
+}
