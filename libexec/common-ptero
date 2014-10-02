@@ -1,3 +1,4 @@
+# vim: ft=sh
 set -e
 
 if [ -n "$PTERO_DEBUG" ]; then
