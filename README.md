@@ -11,14 +11,15 @@ sudo apt-get install curl
 If you just want to experiment with running PTero, then simply run:
 
 ```bash
-make init
+./ptero init
 ```
 
 If you want to get started developing PTero, then you should also fork all the
-submodule repositories and specify your `GITHUB_USERNAME` before running:
+submodule repositories and specify your [GitHub](https://github.com/) username
+before running:
 
 ```bash
-make init GITHUB_USERNAME=<username>
+./ptero init -u <username>
 ```
 
 This will clone all needed submodules and setup remotes for your forks of those
