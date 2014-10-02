@@ -37,8 +37,9 @@ abs_dirname() {
   cd "$cwd"
 }
 
-ptero_dir="$(abs_dirname "$0")"
-export PATH="${ptero_dir}/libexec:${PATH}"
+export PTERO_DIR="$(abs_dirname "$0")"
+export PATH="${PTERO_DIR}/libexec:${PATH}"
+export PTERO_COMMON="${PTERO_DIR}/libexec/common-ptero"
 
 
 command="$1"

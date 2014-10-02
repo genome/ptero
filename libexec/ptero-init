@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+source $PTERO_COMMON
+
+GITHUB_PULL_REMOTE=${GITHUB_PULL_REMOTE:-upstream}
+GITHUB_PUSH_REMOTE=${GITHUB_PUSH_REMOTE:-origin}
+
+github_fork_exists() {
+    local name=$1
+    local repo_url="https://github.com/${GITHUB_USERNAME}/$name"
+    local status_code=$(curl -s -o /dev/null --head -w "%{http_code}" "$repo_url")
+
+    if [ $status_code -eq 200 ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+remove_all_remotes() {
+    git remote | xargs -n 1 git remote remove
+}
+
+add_pull_remote() {
+    local name=$1
+    git remote add "$GITHUB_PULL_REMOTE" "https://github.com/genome/${name}.git"
+}
+
+add_push_remote() {
+    local name=$1
+
+    if $(github_fork_exists "$name"); then
+        git remote add "$GITHUB_PUSH_REMOTE" "git@github.com:${GITHUB_USERNAME}/${name}.git"
+        git config --replace-all remote.pushdefault "$GITHUB_PUSH_REMOTE"
+        git config --replace-all push.default current
+    else
+        echo "Warning: Did not find a fork of ${name} for user ${GITHUB_USERNAME}." 1>&2
+    fi
+}
+
+fetch_all_remotes() {
+    git fetch --all &> /dev/null
+}
+
+configure_repo() {
+    local path=$1
+    local name=$2
+
+    cd $path
+    remove_all_remotes
+    add_pull_remote "$name"
+
+    if [ -n "$GITHUB_USERNAME" ]; then
+        add_push_remote "$name"
+    fi
+
+    fetch_all_remotes
+}
+
+display_help() {
+    cat <<HELP  >&2
+Usage: $(basename $0) [-u <GITHUB_USERNAME>] [-l <GITHUB_PULL_REMOTE>]
+           [-s <GITHUB_PUSH_REMOTE>]
+
+Description:
+  1. Updates all submodules.
+  2. Removes all existing remotes from all repos (including the parent repo).
+  3. Sets the pull remote for all repos to point at the 'genome' organization.
+  4. If -u <GITHUB_USERNAME> is specified, sets the push remote for all repos
+     to point at that user's forks.
+  5. Fetches all branches from both push and pull remotes for all repos.
+
+Options:
+  -l <GITHUB_PULL_REMOTE>
+    What you want to call the 'genome' remote (default: upstream).
+
+  -s <GITHUB_PUSH_REMOTE>
+    What you want to call the \$GITHUB_USERNAME remote (default: origin).
+
+  -u <GITHUB_USERNAME>
+    Your username on github.com (optional).
+HELP
+}
+
+while getopts ":hl:s:u:" opt; do
+    case $opt in
+        h)
+            display_help
+            exit
+        ;;
+        l)
+            GITHUB_PULL_REMOTE="$OPTARG"
+        ;;
+        s)
+            GITHUB_PUSH_REMOTE="$OPTARG"
+        ;;
+        u)
+            GITHUB_USERNAME="$OPTARG"
+        ;;
+        :)
+            echo "Error: missing argument to -$OPTARG !" >&2
+            display_help
+            exit 1
+        ;;
+        \?)
+            echo "Error: illegal flag -$OPTARG !" >&2
+            display_help
+            exit 1
+        ;;
+    esac
+done
+
+if [ -n "$PTERO_DEBUG" ]; then
+    git submodule update --init
+else
+    git submodule update --init >/dev/null
+fi
+
+$(configure_repo "$PTERO_DIR" "ptero")
+for sm in $PTERO_SUBMODULES; do
+    $(configure_repo "$sm" "ptero-$(basename $sm)")
+done
+
