@@ -4,5 +4,3 @@ if [ -n "$PTERO_DEBUG" ]; then
   export PS4='+ [${BASH_SOURCE##*/}:${LINENO}] '
   set -x
 fi
-
-PTERO_SUBMODULES="apis deployment perl-sdk services/*"

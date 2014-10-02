@@ -38,8 +38,20 @@ abs_dirname() {
 }
 
 export PTERO_DIR="$(abs_dirname "$0")"
-export PATH="${PTERO_DIR}/libexec:${PATH}"
 export PTERO_COMMON="${PTERO_DIR}/libexec/common-ptero"
+
+relative_submodules="apis deployment perl-sdk services/*"
+for i in $relative_submodules; do
+    PTERO_SUBMODULES="$PTERO_SUBMODULES $PTERO_DIR/$i"
+done
+export PTERO_SUBMODULES
+
+for i in $PTERO_SUBMODULES; do
+    if [ -d "${i}/libexec" ]; then
+        PATH="${i}/libexec:${PATH}"
+    fi
+done
+export PATH="${PTERO_DIR}/libexec:${PATH}"
 
 
 command="$1"
