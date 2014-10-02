@@ -58,7 +58,7 @@ $(warning Warning: Did not find a fork of $1 for user $(GITHUB_USERNAME).)
 endef
 
 $(SUBMODULES): git-submodule-update
-	$(call git-repo-setup,ptero-$(lastword $(subst /, ,$@)),$@)
+	$(call git-repo-setup,ptero-$(notdir $@),$@)
 
 parent-repo-remotes:
 	$(call git-repo-setup,ptero)
