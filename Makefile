@@ -19,19 +19,20 @@ ifndef GITHUB_PUSH_REMOTE_NAME
 endif
 
 git-submodule-update:
-	git submodule update --init
+	$(info Updating git submodules...)
+	@git submodule update --init
+
+define git-repo-setup
+$(info Setting remotes and git config for $1)
+@cd $(CURDIR)/$2 ; git remote | xargs -n 1 git remote remove
+@cd $(CURDIR)/$2 ; git remote add $(GITHUB_PULL_REMOTE_NAME) https://github.com/genome/$1.git
+@cd $(CURDIR)/$2 ; git remote add $(GITHUB_PUSH_REMOTE_NAME) git@github.com:$(GITHUB_USERNAME)/$1.git
+@cd $(CURDIR)/$2 ; git config --replace-all remote.pushdefault $(GITHUB_PUSH_REMOTE_NAME)
+@cd $(CURDIR)/$2 ; git config --replace-all push.default current
+endef
 
 $(SUBMODULES): git-submodule-update verify-github-parameters
-	cd $(CURDIR)/$@ ; \
-	git remote | xargs -n 1 git remote remove; \
-	git remote add $(GITHUB_PULL_REMOTE_NAME) git@github.com/genome/ptero-$(basename $@).git ; \
-	git remote add $(GITHUB_PUSH_REMOTE_NAME) git@github.com/$(GITHUB_USERNAME)/ptero-$(basename $@).git ; \
-	git config remote.pushdefault $(GITHUB_PUSH_REMOTE_NAME) ; \
-	git config push.default current
+	$(call git-repo-setup,ptero-$(lastword $(subst /, ,$@)),$@)
 
 parent-repo-remotes: verify-github-parameters
-	git remote | xargs -n 1 git remote remove; \
-	git remote add $(GITHUB_PULL_REMOTE_NAME) https://github.com/genome/ptero.git ; \
-	git remote add $(GITHUB_PUSH_REMOTE_NAME) https://github.com/$(GITHUB_USERNAME)/ptero.git ; \
-	git config remote.pushdefault $(GITHUB_PUSH_REMOTE_NAME) ; \
-	git config push.default current
+	$(call git-repo-setup,ptero,.)
