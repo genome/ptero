@@ -56,6 +56,15 @@ export PATH="${PTERO_DIR}/libexec:${PATH}"
 
 command="$1"
 case "$command" in
+'' )
+    echo "Usage: $(basename $0) <SUBCOMMAND> [OPTIONS]" 1>&2
+    echo 1>&2
+    echo "Available subcommands:" 1>&2
+    for SC in $(find $(echo $PATH | sed 's/:/ /g') -maxdepth 1 -name "ptero-*"  | xargs -n 1 basename | sed 's/^ptero-//'); do
+        echo "  $SC" 1>&2
+    done
+    exit 1
+  ;;
 help )
     shift 1
     exec "$0" "$@" -h
