@@ -3,6 +3,16 @@ SUBMODULES = apis deployment perl-sdk services/*
 
 
 # User-facing targets
+all:
+	$(info Manage deployment and testing of the PTero system.)
+	$(info $())
+	$(info Targets:)
+	$(info $()  init - Setup git repos.)
+	$(info $())
+	$(info Examples:)
+	$(info $()  make init GITHUB_USERNAME=$$USER GITHUB_PULL_REMOTE=upstream GITHUB_PUSH_REMOTE=origin)
+	$(info $())
+
 init: parent-repo-remotes $(SUBMODULES)
 
 
