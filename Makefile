@@ -11,11 +11,11 @@ verify-github-parameters:
 ifndef GITHUB_USERNAME
 	$(error GITHUB_USERNAME is required to init. Set GITHUB_USERNAME and try again)
 endif
-ifndef GITHUB_PULL_REMOTE_NAME
-	$(error GITHUB_PULL_REMOTE_NAME is required to init. Set GITHUB_PULL_REMOTE_NAME and try again)
+ifndef GITHUB_PULL_REMOTE
+	$(error GITHUB_PULL_REMOTE is required to init. Set GITHUB_PULL_REMOTE and try again)
 endif
-ifndef GITHUB_PUSH_REMOTE_NAME
-	$(error GITHUB_PUSH_REMOTE_NAME is required to init. Set GITHUB_PUSH_REMOTE_NAME and try again)
+ifndef GITHUB_PUSH_REMOTE
+	$(error GITHUB_PUSH_REMOTE is required to init. Set GITHUB_PUSH_REMOTE and try again)
 endif
 
 git-submodule-update:
@@ -25,9 +25,9 @@ git-submodule-update:
 define git-repo-setup
 $(info Setting remotes and git config for $1)
 @cd $(CURDIR)/$2 ; git remote | xargs -n 1 git remote remove
-@cd $(CURDIR)/$2 ; git remote add $(GITHUB_PULL_REMOTE_NAME) https://github.com/genome/$1.git
-@cd $(CURDIR)/$2 ; git remote add $(GITHUB_PUSH_REMOTE_NAME) git@github.com:$(GITHUB_USERNAME)/$1.git
-@cd $(CURDIR)/$2 ; git config --replace-all remote.pushdefault $(GITHUB_PUSH_REMOTE_NAME)
+@cd $(CURDIR)/$2 ; git remote add $(GITHUB_PULL_REMOTE) https://github.com/genome/$1.git
+@cd $(CURDIR)/$2 ; git remote add $(GITHUB_PUSH_REMOTE) git@github.com:$(GITHUB_USERNAME)/$1.git
+@cd $(CURDIR)/$2 ; git config --replace-all remote.pushdefault $(GITHUB_PUSH_REMOTE)
 @cd $(CURDIR)/$2 ; git config --replace-all push.default current
 endef
 
