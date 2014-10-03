@@ -54,21 +54,20 @@ done
 export PATH="${PTERO_DIR}/libexec:${PATH}"
 
 
+source $PTERO_COMMON
 command="$1"
 case "$command" in
+'' )
+    display_subcommands
+    exit 1
+  ;;
+
 help )
     shift 1
     exec "$0" "$@" -h
   ;;
-* )
-  command_path="$(command -v "ptero-$command" || true)"
-  if [ -z "$command_path" ]; then
-    echo "ptero: no such command \`$command'" >&2
-    exit 1
-  fi
 
-  shift 1
-  exec "$command_path" "$@"
+* )
+    execute_subcommand $@
   ;;
 esac
-
