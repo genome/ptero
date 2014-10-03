@@ -35,7 +35,7 @@ add_push_remote() {
         git config --replace-all remote.pushdefault "$GITHUB_PUSH_REMOTE"
         git config --replace-all push.default current
     else
-        echo "Warning: Did not find a fork of ${name} for user ${GITHUB_USERNAME}." 1>&2
+        log "Warning: Did not find a fork of ${name} for user ${GITHUB_USERNAME}."
     fi
 }
 
@@ -99,12 +99,12 @@ while getopts ":hl:s:u:" opt; do
             GITHUB_USERNAME="$OPTARG"
         ;;
         :)
-            echo "Error: missing argument to -$OPTARG !" >&2
+            log "Error: missing argument to -$OPTARG !"
             display_help
             exit 1
         ;;
         \?)
-            echo "Error: illegal flag -$OPTARG !" >&2
+            log "Error: illegal flag -$OPTARG !"
             display_help
             exit 1
         ;;
