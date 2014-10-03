@@ -1,6 +1,6 @@
 # PTero Workflow Management System
 
-## Setup
+## Getting Started
 Before starting, you need to install `curl`.  On Ubuntu, try:
 
 ```bash
@@ -24,3 +24,19 @@ before running:
 
 This will clone all needed submodules and setup remotes for your forks of those
 repos.  It will not directly fork those repos on github.
+
+## Running PTero on Vagrant
+Before running PTero on Vagrant, you must make sure Vagrant 1.6 or newer is
+installed on your machine.  To setup Vagrant to run PTero, including the
+installation of required Vagrant plugins, run this:
+
+```bash
+./ptero vagrant init
+```
+
+Once Vagrant has been initialized for PTero, run PTero on Vagrant by running
+this:
+
+```bash
+./ptero vagrant create
+```
