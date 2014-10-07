@@ -16,3 +16,6 @@
 [submodule "perl-sdk"]
 	path = perl-sdk
 	url = https://github.com/genome/ptero-perl-sdk.git
+[submodule "benchmarking"]
+	path = benchmarking
+	url = https://github.com/genome/ptero-benchmarking.git
