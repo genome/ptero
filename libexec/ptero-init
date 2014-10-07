@@ -112,9 +112,9 @@ while getopts ":hl:s:u:" opt; do
 done
 
 if [ -n "$PTERO_DEBUG" ]; then
-    git submodule update --init
+    git submodule update --init --recursive
 else
-    git submodule update --init >/dev/null
+    git submodule update --init --recursive >/dev/null
 fi
 
 $(configure_repo "$PTERO_DIR" "ptero")
