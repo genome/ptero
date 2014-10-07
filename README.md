@@ -31,12 +31,12 @@ installed on your machine.  To setup Vagrant to run PTero, including the
 installation of required Vagrant plugins, run this:
 
 ```bash
-./ptero vagrant init
+./ptero deploy vagrant init
 ```
 
 Once Vagrant has been initialized for PTero, run PTero on Vagrant by running
 this:
 
 ```bash
-./ptero vagrant create
+./ptero deploy vagrant create
 ```
