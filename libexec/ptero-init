@@ -118,7 +118,7 @@ else
 fi
 
 $(configure_repo "$PTERO_DIR" "ptero")
-for sm in $PTERO_SUBMODULES; do
+for sm in $(git submodule status --recursive | awk '{print $2}'); do
     $(configure_repo "$sm" "ptero-$(basename $sm)")
 done
 
