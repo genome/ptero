@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+source $PTERO_COMMON
+
+delegate_to_subcommand $@

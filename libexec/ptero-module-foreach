@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+source $PTERO_COMMON
+
+cd "${PTERO_DIR}"
+
+echo "Entering '/'"
+$@
+
+git submodule foreach --recursive "$@"
