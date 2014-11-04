@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+git submodule foreach --recursive git stash save "Auotmatic stash by 'ptero update' script"
+git submodule foreach --recursive git checkout master
+git submodule foreach --recursive git pull --rebase

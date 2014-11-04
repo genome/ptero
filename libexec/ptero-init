@@ -25,6 +25,7 @@ remove_all_remotes() {
 add_pull_remote() {
     local name=$1
     git remote add "$GITHUB_PULL_REMOTE" "https://github.com/genome/${name}.git"
+    git branch --set-upstream-to="${GITHUB_PULL_REMOTE}/master" master
 }
 
 add_push_remote() {
