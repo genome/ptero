@@ -15,63 +15,75 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>Ptero</h1>
-        <p></p>
-
-        <p class="view"><a href="https://github.com/genome/ptero">View the Project on GitHub <small>genome/ptero</small></a></p>
-
-
+        <h1>Ptero
         <ul>
-          <li><a href="https://github.com/genome/ptero/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/genome/ptero/tarball/master">Download <strong>TAR Ball</strong></a></li>
           <li><a href="https://github.com/genome/ptero">View On <strong>GitHub</strong></a></li>
-        </ul>
+        </ul></h1>
       </header>
       <section>
         <h1>
-<a id="ptero-workflow-management-system" class="anchor" href="#ptero-workflow-management-system" aria-hidden="true"><span class="octicon octicon-link"></span></a>PTero Workflow Management System</h1>
+          <a id="ptero-workflow-management-system" class="anchor" href="#ptero-workflow-management-system" aria-hidden="true"><span class="octicon octicon-link"></span></a>PTero Workflow Management System</h1>
 
-<h2>
-<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting Started</h2>
+        <h2>
+          <a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>PTero Repos</h2>
+        <h3>Main PTero repos</h3>
+        <p><a href="https://github.com/genome/ptero-workflow">ptero-workflow</a> - orchestrates inputs and outputs for tasks</p>
+        <p><a href="https://github.com/genome/ptero-petri">ptero-petri</a> - manages flow control</p>
+        <p><a href="https://github.com/genome/ptero-lsf">ptero-lsf</a> - submits jobs to an LSF cluster on behalf of the user</p>
+        <p><a href="https://github.com/genome/ptero-shell-command">ptero-shell-command</a> - executes local processes without resource management</p>
+        <p><a href="https://github.com/genome/ptero-auth">ptero-auth</a> - manages user credentials</p>
 
-<p>Before starting, you need to install <code>curl</code>.  On Ubuntu, try:</p>
+        <h3>Additional PTero repos</h3>
+        <p><a href="https://github.com/genome/ptero-deployment">ptero-deployment</a> - deployment scripts for PTero</p>
+        <p><a href="https://github.com/genome/ptero-puppet">ptero-puppet</a> - Puppet scripts for PTero</p>
+        <p><a href="https://github.com/genome/ptero-perl-sdk">ptero-perl-sdk</a> Perl SDK for PTero</p>
+        <p><a href="https://github.com/genome/ptero-benchmarking">ptero-benchmarking</a> - benchmarking scripts for PTero</p>
+        <p><a href="https://github.com/genome/ptero-common">ptero-common</a> - code shared between PTero services</p>
+        <p><a href="https://github.com/genome/ptero-apis">ptero-apis</a> - PTero design documents</p>
 
-<div class="highlight highlight-bash"><pre>sudo apt-get update
-sudo apt-get install curl</pre></div>
+        <h2>
+          <a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting Started</h2>
 
-<p>If you just want to experiment with running PTero, then simply run:</p>
+        <p>Before starting, you need to install <code>curl</code>.  On Ubuntu, try:</p>
 
-<div class="highlight highlight-bash"><pre>./ptero init</pre></div>
+        <div class="highlight highlight-bash">
+          <pre>sudo apt-get update
+sudo apt-get install curl</pre>
+        </div>
 
-<p>If you want to get started developing PTero, then you should also fork all the
-submodule repositories and specify your <a href="https://github.com/">GitHub</a> username
-before running:</p>
+        <p>If you just want to experiment with running PTero, then simply run:</p>
 
-<div class="highlight highlight-bash"><pre>./ptero init -u <span class="o">&lt;</span>username<span class="o">&gt;</span></pre></div>
+        <div class="highlight highlight-bash"><pre>./ptero init</pre></div>
 
-<p>This will clone all needed submodules and setup remotes for your forks of those
-repos.  It will not directly fork those repos on github.</p>
+        <p>If you want to get started developing PTero, then you should also fork all the
+        submodule repositories and specify your <a href="https://github.com/">GitHub</a> username
+        before running:</p>
 
-<h2>
-<a id="running-ptero-on-vagrant" class="anchor" href="#running-ptero-on-vagrant" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running PTero on Vagrant</h2>
+        <div class="highlight highlight-bash"><pre>./ptero init -u <span class="o">&lt;</span>username<span class="o">&gt;</span></pre></div>
 
-<p>Before running PTero on Vagrant, you must make sure Vagrant 1.6 or newer is
-installed on your machine.  To setup Vagrant to run PTero, including the
-installation of required Vagrant plugins, run this:</p>
+        <p>This will clone all needed submodules and setup remotes for your forks of those
+        repos.  It will not directly fork those repos on github.</p>
 
-<div class="highlight highlight-bash"><pre>./ptero deploy vagrant init</pre></div>
+        <h2>
+          <a id="running-ptero-on-vagrant" class="anchor" href="#running-ptero-on-vagrant" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running PTero on Vagrant</h2>
 
-<p>Once Vagrant has been initialized for PTero, run PTero on Vagrant by running
-this:</p>
+        <p>Before running PTero on Vagrant, you must make sure Vagrant 1.6 or newer is
+        installed on your machine.  To setup Vagrant to run PTero, including the
+        installation of required Vagrant plugins, run this:</p>
 
-<div class="highlight highlight-bash"><pre>./ptero deploy vagrant create</pre></div>
+        <div class="highlight highlight-bash"><pre>./ptero deploy vagrant init</pre></div>
+
+        <p>Once Vagrant has been initialized for PTero, run PTero on Vagrant by running
+        this:</p>
+
+        <div class="highlight highlight-bash"><pre>./ptero deploy vagrant create</pre></div>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/genome">genome</a></p>
+        <p>This project is maintained by<br/><a href="https://github.com/genome">The Genome Institute</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-    
+
   </body>
 </html>
