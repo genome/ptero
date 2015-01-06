@@ -28,6 +28,7 @@ add_pull_remote() {
     git remote add "$GITHUB_PULL_REMOTE" "https://github.com/genome/${name}.git" >&2
     git fetch "${GITHUB_PULL_REMOTE}" >&2
 
+    git checkout -B master >&2
     git branch --set-upstream-to "${GITHUB_PULL_REMOTE}/master" master >&2
 }
 
