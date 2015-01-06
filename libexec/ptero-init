@@ -24,24 +24,25 @@ remove_all_remotes() {
 
 add_pull_remote() {
     local name=$1
-    git remote add "$GITHUB_PULL_REMOTE" "https://github.com/genome/${name}.git"
-    git branch --set-upstream-to="${GITHUB_PULL_REMOTE}/master" master
+
+    git remote add "$GITHUB_PULL_REMOTE" "https://github.com/genome/${name}.git" >&2
+    git fetch "${GITHUB_PULL_REMOTE}" >&2
+
+    git branch --set-upstream-to "${GITHUB_PULL_REMOTE}/master" master >&2
 }
 
 add_push_remote() {
     local name=$1
 
     if $(github_fork_exists "$name"); then
-        git remote add "$GITHUB_PUSH_REMOTE" "git@github.com:${GITHUB_USERNAME}/${name}.git"
-        git config --replace-all remote.pushdefault "$GITHUB_PUSH_REMOTE"
-        git config --replace-all push.default current
+        git remote add "$GITHUB_PUSH_REMOTE" "git@github.com:${GITHUB_USERNAME}/${name}.git" >&2
+        git fetch "${GITHUB_PUSH_REMOTE}" >&2
+
+        git config --replace-all remote.pushdefault "$GITHUB_PUSH_REMOTE" >&2
+        git config --replace-all push.default current >&2
     else
         log "Warning: Did not find a fork of ${name} for user ${GITHUB_USERNAME}."
     fi
-}
-
-fetch_all_remotes() {
-    git fetch --all &> /dev/null
 }
 
 configure_repo() {
@@ -55,8 +56,6 @@ configure_repo() {
     if [ -n "$GITHUB_USERNAME" ]; then
         add_push_remote "$name"
     fi
-
-    fetch_all_remotes
 }
 
 display_help() {
