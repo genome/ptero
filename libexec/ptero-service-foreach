@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+set -o errexit
+
+source $PTERO_COMMON
+
+cd "${PTERO_DIR}"
+
+for SERVICE in $(find services -mindepth 1 -maxdepth 1 -type d); do
+    echo "Executing in ${SERVICE}..."
+    pushd "${SERVICE}" > /dev/null
+    eval $@
+    popd > /dev/null
+done
