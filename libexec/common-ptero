@@ -51,3 +51,7 @@ delegate_to_subcommand() {
       ;;
     esac
 }
+
+python_realpath() {
+    python -c 'import os; import sys; print os.path.realpath(sys.argv[1])' $1
+}
