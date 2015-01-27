@@ -19,3 +19,6 @@
 [submodule "benchmarking"]
 	path = benchmarking
 	url = https://github.com/genome/ptero-benchmarking.git
+[submodule "common"]
+	path = common
+	url = https://github.com/genome/ptero-common.git
