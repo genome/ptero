@@ -23,7 +23,7 @@ Vagrant::configure("2") do |config|
   config.vm.provision 'apt-get update',             type: "shell", inline: "apt-get update"
   config.vm.provision 'apt-get install',            type: "shell", inline: "apt-get -qq -y install git python-dev python-pip rabbitmq-server redis-server postgresql-server-dev-9.3"
   config.vm.provision 'use bash instead of dash',   type: "shell", inline: "update-alternatives --install /bin/sh sh /bin/bash 100"
-  config.vm.provision 'pip install tox',            type: "shell", inline: "pip install tox"
+  config.vm.provision 'pip install tox',            type: "shell", inline: "pip install tox==1.9.0"
   config.vm.provision 'copy ptero to $HOME',        type: "shell", privileged: false, inline: "rsync -aLq ~/.ptero-synced-folder/ ~/ptero --exclude='*.tox*' --exclude='*.vagrant*'"
   config.vm.provision 'launch services',            type: "shell", privileged: false, inline: "source ~/ptero/Vagrantfile-env.sh; cd ~/ptero/services/workflow; tox -re dev-noenv -- --logdir=var/log --daemondir=var/run"
 
