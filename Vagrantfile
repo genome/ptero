@@ -27,6 +27,6 @@ Vagrant::configure("2") do |config|
   config.vm.provision 'use bash instead of dash',   type: "shell", inline: "update-alternatives --install /bin/sh sh /bin/bash 100"
   config.vm.provision 'pip install tox',            type: "shell", inline: "pip install tox==1.9.0"
   config.vm.provision 'copy ptero to $HOME',        type: "shell", privileged: false, inline: "rsync -aLq ~/.ptero-synced-folder/ ~/ptero --exclude='*.tox*' --exclude='*.vagrant*'"
-  config.vm.provision 'launch services',            type: "shell", privileged: false, inline: "source ~/ptero/Vagrantfile-env.sh; cd ~/ptero/services/workflow; tox -re dev-noenv -- --logdir=var/log --daemondir=var/run"
+  config.vm.provision 'launch services',            type: "shell", privileged: false, inline: "cd ~/ptero/services/workflow; tox -re dev -- --logdir=var/log --daemondir=var/run"
 
 end
