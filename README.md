@@ -136,7 +136,7 @@ GET http://192.168.20.20:7000/v1/workflows/1
 
 ### Getting Workflow Outputs
 To access the outputs of the completed workflow perform a GET on the URL listed
-under the reports.workflow-outputs path.  
+under the `reports.workflow-outputs` path.  
 
 GET http://192.168.20.20:7000/v1/reports/workflow-outputs?workflow_id=1
 ```json
