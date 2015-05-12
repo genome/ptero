@@ -4,6 +4,7 @@
 BOX_NAME = ENV["BOX_NAME"] || "trusty"
 BOX_URI = ENV["BOX_URI"] || "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
 BOX_MEMORY = ENV["BOX_MEMORY"] || "2048"
+BOX_CPUS = ENV["BOX_CPUS"] || "1"
 
 Vagrant::configure("2") do |config|
   config.ssh.forward_agent = true
@@ -15,6 +16,7 @@ Vagrant::configure("2") do |config|
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     vb.customize ["modifyvm", :id, "--memory", BOX_MEMORY]
+    vb.customize ["modifyvm", :id, "--cpus", BOX_CPUS]
   end
 
 
@@ -25,6 +27,6 @@ Vagrant::configure("2") do |config|
   config.vm.provision 'use bash instead of dash',   type: "shell", inline: "update-alternatives --install /bin/sh sh /bin/bash 100"
   config.vm.provision 'pip install tox',            type: "shell", inline: "pip install tox==1.9.0"
   config.vm.provision 'copy ptero to $HOME',        type: "shell", privileged: false, inline: "rsync -aLq ~/.ptero-synced-folder/ ~/ptero --exclude='*.tox*' --exclude='*.vagrant*'"
-  config.vm.provision 'launch services',            type: "shell", privileged: false, inline: "source ~/ptero/Vagrantfile-env.sh; cd ~/ptero/services/workflow; tox -re dev-noenv -- --logdir=var/log --daemondir=var/run"
+  config.vm.provision 'launch services',            type: "shell", privileged: false, inline: "cd ~/ptero/services/workflow; tox -re dev -- --logdir=var/log --daemondir=var/run"
 
 end
