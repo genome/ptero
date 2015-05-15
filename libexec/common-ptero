@@ -55,3 +55,15 @@ delegate_to_subcommand() {
 python_realpath() {
     python -c 'import os; import sys; print os.path.realpath(sys.argv[1])' $1
 }
+
+verify_jq() {
+    if [ -z $(which jq) ]; then
+        log "jq must be available in PATH"
+        exit 1
+    fi
+    VERSION_ERROR=$(jq --version 2>&1 >/dev/null | perl -lne 'if ($_ =~ m/(\d+\.\d+).*$/) { if ($1 < 1.4) {print "jq version must be >= 1.4"}} else { print qq(Cannot parse version from `jq --version` output "$_".); }')
+    if test -n "$VERSION_ERROR"; then
+        log "$VERSION_ERROR"
+        exit 1
+    fi
+}
