@@ -23,9 +23,10 @@ Vagrant::configure("2") do |config|
   config.vm.synced_folder ".", "/home/vagrant/.ptero-synced-folder"
 
   config.vm.provision 'apt-get update',             type: "shell", inline: "apt-get update"
-  config.vm.provision 'apt-get install',            type: "shell", inline: "apt-get -qq -y install git python-dev python-pip rabbitmq-server redis-server postgresql-server-dev-9.3"
+  config.vm.provision 'apt-get install',            type: "shell", inline: "apt-get -qq -y install git python-dev python-pip rabbitmq-server redis-server postgresql libpq-dev"
   config.vm.provision 'use bash instead of dash',   type: "shell", inline: "update-alternatives --install /bin/sh sh /bin/bash 100"
   config.vm.provision 'pip install tox',            type: "shell", inline: "pip install tox"
+  config.vm.provision 'set postgres auth-method',   type: "shell", inline: 'echo -e "local all all trust\nhost all all 127.0.0.1/32 trust" > /etc/postgresql/9.3/main/pg_hba.conf && service postgresql restart'
   config.vm.provision 'copy ptero to $HOME',        type: "shell", privileged: false, inline: "rsync -aLq ~/.ptero-synced-folder/ ~/ptero --exclude='*.tox*' --exclude='*.vagrant*'"
   config.vm.provision 'launch services',            type: "shell", privileged: false, inline: "cd ~/ptero/services/workflow; tox -re dev -- --logdir=var/log --daemondir=var/run"
 
