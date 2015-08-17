@@ -22,3 +22,6 @@
 [submodule "common"]
 	path = common
 	url = https://github.com/genome/ptero-common.git
+[submodule "services/lsf"]
+	path = services/lsf
+	url = git@github.com:genome/ptero-lsf
