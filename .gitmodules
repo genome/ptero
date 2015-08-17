@@ -7,18 +7,9 @@
 [submodule "services/petri"]
 	path = services/petri
 	url = https://github.com/genome/ptero-petri.git
-[submodule "apis"]
-	path = apis
-	url = https://github.com/genome/ptero-apis.git
-[submodule "deployment"]
-	path = deployment
-	url = https://github.com/genome/ptero-deployment.git
 [submodule "perl-sdk"]
 	path = perl-sdk
 	url = https://github.com/genome/ptero-perl-sdk.git
-[submodule "benchmarking"]
-	path = benchmarking
-	url = https://github.com/genome/ptero-benchmarking.git
 [submodule "common"]
 	path = common
 	url = https://github.com/genome/ptero-common.git
