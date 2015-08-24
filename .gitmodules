@@ -16,3 +16,6 @@
 [submodule "services/lsf"]
 	path = services/lsf
 	url = git@github.com:genome/ptero-lsf
+[submodule "deployment"]
+	path = deployment
+	url = git@github.com:genome/ptero-deployment.git
