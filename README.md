@@ -1,31 +1,7 @@
 # PTero Workflow Management System
 
 ## Getting Started
-To launch a virtual machine running the PTero services, you need to install
-[VirtualBox](https://www.virtualbox.org/) and
-[Vagrant](https://www.vagrantup.com/) using the installation instructions for
-your platform.
-
-To experiment with PTero, then run:
-
-```bash
-git clone http://github.com/genome/ptero.git
-cd ptero
-```
-
-The `ptero init` command will setup all of the PTero submodules:
-
-```bash
-./ptero init
-```
-
-The `vagrant up` command will spin-up a guest virtual machine, running Ubuntu
-14.04 (trusty).  Vagrant then launches a complete set of PTero services on the
-guest, which can be accessed from your host machine.
-
-```bash
-vagrant up
-```
+Follow [this guide](https://github.com/genome/ptero/wiki/Getting-Started) to setup a vm with the ptero services running in it (don't worry it's short).
 
 ### Submitting a Workflow
 The PTero services are now ready to accept HTTP requests.  Using an HTTP
