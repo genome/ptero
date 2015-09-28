@@ -1,21 +1,21 @@
 [submodule "services/workflow"]
 	path = services/workflow
-	url = https://github.com/genome/ptero-workflow.git
+	url = http://github.com/genome/ptero-workflow.git
 [submodule "services/shell-command"]
 	path = services/shell-command
-	url = https://github.com/genome/ptero-shell-command.git
+	url = http://github.com/genome/ptero-shell-command.git
 [submodule "services/petri"]
 	path = services/petri
-	url = https://github.com/genome/ptero-petri.git
+	url = http://github.com/genome/ptero-petri.git
 [submodule "perl-sdk"]
 	path = perl-sdk
-	url = https://github.com/genome/ptero-perl-sdk.git
+	url = http://github.com/genome/ptero-perl-sdk.git
 [submodule "common"]
 	path = common
-	url = https://github.com/genome/ptero-common.git
+	url = http://github.com/genome/ptero-common.git
 [submodule "services/lsf"]
 	path = services/lsf
-	url = git@github.com:genome/ptero-lsf
+	url = http://github.com/genome/ptero-lsf.git
 [submodule "deployment"]
 	path = deployment
-	url = git@github.com:genome/ptero-deployment.git
+	url = http://github.com/genome/ptero-deployment.git
