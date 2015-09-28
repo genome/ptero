@@ -1,31 +1,7 @@
 # PTero Workflow Management System
 
 ## Getting Started
-To launch a virtual machine running the PTero services, you need to install
-[VirtualBox](https://www.virtualbox.org/) and
-[Vagrant](https://www.vagrantup.com/) using the installation instructions for
-your platform.
-
-To experiment with PTero, then run:
-
-```bash
-git clone http://github.com/genome/ptero.git
-cd ptero
-```
-
-The `ptero init` command will setup all of the PTero submodules:
-
-```bash
-./ptero init
-```
-
-The `vagrant up` command will spin-up a guest virtual machine, running Ubuntu
-14.04 (trusty).  Vagrant then launches a complete set of PTero services on the
-guest, which can be accessed from your host machine.
-
-```bash
-vagrant up
-```
+Follow [this guide](https://github.com/genome/ptero/wiki/Getting-Started) to setup a vm with the ptero services running in it (don't worry it's short).
 
 ### Submitting a Workflow
 The PTero services are now ready to accept HTTP requests.  Using an HTTP
@@ -34,45 +10,40 @@ client, such as Postman, POST the following json workflow document to
 `Content-Type: application/json` header:
 
 ```json
-{  
-   "tasks":{  
-      "A":{  
-         "methods":[  
-            {  
-               "name":"execute",
-               "service":"shell-command",
-               "parameters":{  
-                  "commandLine":[  
-                     "./echo_command"
-                  ],
-                  "user":"vagrant",
-                  "workingDirectory":"/home/vagrant/ptero/services/workflow/tests/scripts",
-                  "environment":{  
-                     "VIRTUAL_ENV":"/home/vagrant/ptero/services/shell-command/.tox/dev-noenv",
-                     "PATH":"/home/vagrant/ptero/services/shell-command/.tox/dev-noenv/bin:/home/vagrant/bin:/home/vagrant/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/vagrant/bin:/home/vagrant/bin"
-                  }
-               }
-            }
-         ]
-      }
-   },
-   "links":[  
-      {  
-         "source":"input connector",
-         "destination":"A",
-         "sourceProperty":"in_a",
-         "destinationProperty":"param"
-      },
-      {  
-         "source":"A",
-         "destination":"output connector",
-         "sourceProperty":"param",
-         "destinationProperty":"out_a"
-      }
-   ],
-   "inputs":{  
-      "in_a":"kittens"
-   }
+{
+    "inputs": {},
+    "links": [
+        {
+            "destination": "output connector",
+            "source": "Say Hello"
+        },
+        {
+            "destination": "Say Hello",
+            "source": "input connector"
+        }
+    ],
+    "tasks": {
+        "Say Hello": {
+            "methods": [
+                {
+                    "name": "print hello",
+                    "parameters": {
+                        "commandLine": [
+                            "bash",
+                            "-c",
+                            "echo hello 1>&2; echo world!"
+                        ],
+                        "environment": {},
+                        "user": "vagrant",
+                        "workingDirectory": "/home/vagrant/ptero/services/workflow/tests/scripts"
+                    },
+                    "service": "job",
+                    "serviceUrl": "http://localhost:5000/v1"
+                }
+            ]
+        }
+    }
+}
 }
 ```
 
@@ -86,51 +57,16 @@ response body.
 GET http://192.168.20.20:7000/v1/workflows/1
 ```json
 {
-    "name": "BEb3lCtuQLO_cdwgnE0dsA",
-    "reports": {
-        "workflow-outputs": "http://192.168.20.20:7000/v1/reports/workflow-outputs?workflow_id=2",
-        "workflow-status": "http://192.168.20.20:7000/v1/reports/workflow-status?workflow_id=2",
-        "workflow-details": "http://192.168.20.20:7000/v1/reports/workflow-details?workflow_id=2"
-    },
-    "tasks": {
-        "A": {
-            "methods": [
-                {
-                    "name": "execute",
-                    "service": "shell-command",
-                    "parameters": {
-                        "user": "vagrant",
-                        "workingDirectory": "/home/vagrant/ptero/services/workflow/tests/scripts",
-                        "environment": {
-                            "PATH": "/home/vagrant/ptero/services/shell-command/.tox/dev-noenv/bin:/home/vagrant/bin:/home/vagrant/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/vagrant/bin:/home/vagrant/bin",
-                            "VIRTUAL_ENV": "/home/vagrant/ptero/services/shell-command/.tox/dev-noenv"
-                        },
-                        "commandLine": [
-                            "./echo_command"
-                        ]
-                    }
-                }
-            ]
-        }
-    },
-    "links": [
-        {
-            "sourceProperty": "param",
-            "source": "A",
-            "destinationProperty": "out_a",
-            "destination": "output connector"
-        },
-        {
-            "sourceProperty": "in_a",
-            "source": "input connector",
-            "destinationProperty": "param",
-            "destination": "A"
-        }
-    ],
-    "inputs": {
-        "in_a": "kittens"
-    },
-    "status": "new"
+  "name": "M5ZD6QXeTC6gcTp5x-7tBQ",
+  "reports": {
+    "workflow-details": "http://localhost:7000/v1/reports/workflow-details?workflow_id=1",
+    "workflow-executions": "http://localhost:7000/v1/reports/workflow-executions?workflow_id=1",
+    "workflow-outputs": "http://localhost:7000/v1/reports/workflow-outputs?workflow_id=1",
+    "workflow-skeleton": "http://localhost:7000/v1/reports/workflow-skeleton?workflow_id=1",
+    "workflow-status": "http://localhost:7000/v1/reports/workflow-status?workflow_id=1",
+    "workflow-submission-data": "http://localhost:7000/v1/reports/workflow-submission-data?workflow_id=1"
+  },
+  "status": "succeeded"
 }
 ```
 
@@ -141,9 +77,7 @@ under the `reports.workflow-outputs` path.
 GET http://192.168.20.20:7000/v1/reports/workflow-outputs?workflow_id=1
 ```json
 {
-    "outputs": {
-        "out_a": "kittens"
-    }
+    "outputs": null
 }
 ```
 
@@ -152,149 +86,131 @@ A more detailed report about the workflow is available by following the url at `
 GET http://192.168.20.20:7000/v1/reports/workflow-details?workflow_id=1
 ```json
 {
-    "name": "Oubvo2Z2Si2RTib9dFugYA",
+    "inputs": {},
     "links": [
         {
-            "sourceProperty": "param",
-            "source": "A",
-            "destinationProperty": "out_a",
-            "destination": "output connector"
+            "destination": "output connector",
+            "source": "Say Hello"
         },
         {
-            "sourceProperty": "in_a",
-            "source": "input connector",
-            "destinationProperty": "param",
-            "destination": "A"
+            "destination": "Say Hello",
+            "source": "input connector"
         }
     ],
-    "inputs": {
-        "in_a": "kittens"
-    },
+    "name": "M5ZD6QXeTC6gcTp5x-7tBQ",
     "status": "succeeded",
     "tasks": {
-        "A": {
-            "methods": [
-                {
-                    "name": "execute",
-                    "executions": {
-                        "0": {
-                            "name": "A.execute.5",
-                            "status_history": [
-                                {
-                                    "timestamp": "2015-05-10 00:15:28",
-                                    "status": "new"
-                                },
-                                {
-                                    "timestamp": "2015-05-10 00:15:29",
-                                    "status": "scheduled"
-                                },
-                                {
-                                    "timestamp": "2015-05-10 00:15:29",
-                                    "status": "running"
-                                },
-                                {
-                                    "timestamp": "2015-05-10 00:15:29",
-                                    "status": "succeeded"
-                                }
-                            ],
-                            "parent_color": null,
-                            "begins": [
-                                0
-                            ],
-                            "status": "succeeded",
-                            "data": {
-                                "stdout": "Found PTERO_WORKFLOW_EXECUTION_URL = http://localhost:7000/v1/executions/5\nFound execution_data from GET request = {u'begins': [0], u'status': u'running', u'name': u'A.execute.5', u'inputs': {u'param': u'kittens'}, u'color': 0, u'data': {u'petri_response_links': {u'created': u'http://localhost:6000/v1/nets/U18_8ydvTeCFlFGCKDFQQA/places/14/tokens?color=0&color_group=0'}, u'petri_response_links_for_shell_command': {u'failure': u'http://localhost:6000/v1/nets/U18_8ydvTeCFlFGCKDFQQA/places/34/tokens?color=0&color_group=0', u'success': u'http://localhost:6000/v1/nets/U18_8ydvTeCFlFGCKDFQQA/places/8/tokens?color=0&color_group=0'}, u'job_id': u'aae0e6bd-8f75-43d0-9808-92d608ee8454'}, u'colors': [0], u'outputs': {}, u'parent_color': None, u'status_history': [{u'status': u'new', u'timestamp': u'2015-05-10 00:15:28'}, {u'status': u'scheduled', u'timestamp': u'2015-05-10 00:15:29'}, {u'status': u'running', u'timestamp': u'2015-05-10 00:15:29'}]}\nSending PATCH to http://localhost:7000/v1/executions/5 with body: {'outputs': {u'param': u'kittens'}}\n",
-                                "petri_response_links_for_shell_command": {
-                                    "success": "http://localhost:6000/v1/nets/U18_8ydvTeCFlFGCKDFQQA/places/8/tokens?color=0&color_group=0",
-                                    "failure": "http://localhost:6000/v1/nets/U18_8ydvTeCFlFGCKDFQQA/places/34/tokens?color=0&color_group=0"
-                                },
-                                "status": "succeeded",
-                                "job_id": "aae0e6bd-8f75-43d0-9808-92d608ee8454",
-                                "exitCode": 0,
-                                "stderr": "",
-                                "jobId": "aae0e6bd-8f75-43d0-9808-92d608ee8454",
-                                "petri_response_links": {
-                                    "created": "http://localhost:6000/v1/nets/U18_8ydvTeCFlFGCKDFQQA/places/14/tokens?color=0&color_group=0"
-                                }
-                            },
-                            "outputs": {
-                                "param": "kittens"
-                            },
-                            "inputs": {
-                                "param": "kittens"
-                            },
-                            "color": 0,
-                            "colors": [
-                                0
-                            ]
-                        }
-                    },
-                    "service": "shell-command",
-                    "parameters": {
-                        "user": "vagrant",
-                        "workingDirectory": "/home/vagrant/ptero/services/workflow/tests/scripts",
-                        "environment": {
-                            "PATH": "/home/vagrant/ptero/services/shell-command/.tox/dev-noenv/bin:/home/vagrant/bin:/home/vagrant/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/vagrant/bin:/home/vagrant/bin",
-                            "VIRTUAL_ENV": "/home/vagrant/ptero/services/shell-command/.tox/dev-noenv"
-                        },
-                        "commandLine": [
-                            "./echo_command"
-                        ]
-                    }
-                }
-            ],
+        "Say Hello": {
             "executions": {
                 "0": {
-                    "name": "A.4",
-                    "status_history": [
-                        {
-                            "timestamp": "2015-05-10 00:15:28",
-                            "status": "new"
-                        },
-                        {
-                            "timestamp": "2015-05-10 00:15:28",
-                            "status": "scheduled"
-                        },
-                        {
-                            "timestamp": "2015-05-10 00:15:28",
-                            "status": "running"
-                        },
-                        {
-                            "timestamp": "2015-05-10 00:15:29",
-                            "status": "succeeded"
-                        }
-                    ],
-                    "parent_color": null,
                     "begins": [
                         0
                     ],
-                    "status": "succeeded",
-                    "data": {
-                        "petri_response_links": {
-                            "created": "http://localhost:6000/v1/nets/U18_8ydvTeCFlFGCKDFQQA/places/48/tokens?color=0&color_group=0"
-                        }
-                    },
-                    "outputs": {
-                        "param": "kittens"
-                    },
-                    "inputs": {
-                        "param": "kittens"
-                    },
                     "color": 0,
                     "colors": [
                         0
+                    ],
+                    "data": {
+                        "petri_response_links": {
+                            "created": "http://localhost:6001/v1/nets/4NqFjgmmRFGYwcm0cuHkAg/places/21/tokens?color=0&color_group=0"
+                        }
+                    },
+                    "name": "Say Hello.4",
+                    "parent_color": null,
+                    "status": "succeeded",
+                    "status_history": [
+                        {
+                            "status": "running",
+                            "timestamp": "2015-09-26 01:48:26.003525+00:00"
+                        },
+                        {
+                            "status": "scheduled",
+                            "timestamp": "2015-09-26 01:48:26.003525+00:00"
+                        },
+                        {
+                            "status": "new",
+                            "timestamp": "2015-09-26 01:48:26.003525+00:00"
+                        },
+                        {
+                            "status": "succeeded",
+                            "timestamp": "2015-09-26 01:48:27.633535+00:00"
+                        }
                     ]
                 }
-            }
+            },
+            "methods": [
+                {
+                    "executions": {
+                        "0": {
+                            "begins": [
+                                0
+                            ],
+                            "color": 0,
+                            "colors": [
+                                0
+                            ],
+                            "data": {
+                                "exitCode": 0,
+                                "jobId": "f70838fd-87c7-45ad-9ae1-bdd5a2e6226a",
+                                "job_id": "f70838fd-87c7-45ad-9ae1-bdd5a2e6226a",
+                                "petri_response_links": {
+                                    "created": "http://localhost:6001/v1/nets/4NqFjgmmRFGYwcm0cuHkAg/places/40/tokens?color=0&color_group=0"
+                                },
+                                "petri_response_links_for_job": {
+                                    "failure": "http://localhost:6001/v1/nets/4NqFjgmmRFGYwcm0cuHkAg/places/49/tokens?color=0&color_group=0",
+                                    "success": "http://localhost:6001/v1/nets/4NqFjgmmRFGYwcm0cuHkAg/places/15/tokens?color=0&color_group=0"
+                                },
+                                "status": "succeeded",
+                                "stderr": "hello\n",
+                                "stdout": "world!\n"
+                            },
+                            "name": "Say Hello.print hello.5",
+                            "parent_color": null,
+                            "status": "succeeded",
+                            "status_history": [
+                                {
+                                    "status": "new",
+                                    "timestamp": "2015-09-26 01:48:26.099681+00:00"
+                                },
+                                {
+                                    "status": "scheduled",
+                                    "timestamp": "2015-09-26 01:48:26.201118+00:00"
+                                },
+                                {
+                                    "status": "running",
+                                    "timestamp": "2015-09-26 01:48:27.422265+00:00"
+                                },
+                                {
+                                    "status": "succeeded",
+                                    "timestamp": "2015-09-26 01:48:27.463615+00:00"
+                                }
+                            ]
+                        }
+                    },
+                    "name": "print hello",
+                    "parameters": {
+                        "commandLine": [
+                            "bash",
+                            "-c",
+                            "echo hello 1>&2; echo world!"
+                        ],
+                        "environment": {},
+                        "user": "vagrant",
+                        "workingDirectory": "/home/vagrant/ptero/services/workflow/tests/scripts"
+                    },
+                    "service": "job",
+                    "serviceUrl": "http://localhost:5000/v1"
+                }
+            ]
         }
     }
 }
 ```
 
 ## Contributing
-If you want to get started developing PTero, then you should also fork all the
-submodule repositories and specify your [GitHub](https://github.com/) username
-before running:
+We accept github pull-requests, so if you want to get started developing PTero,
+then you should also fork all the submodule repositories and specify your 
+[GitHub](https://github.com/) username before running:
 
 ```bash
 sudo apt-get update
