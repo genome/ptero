@@ -44,7 +44,6 @@ client, such as Postman, POST the following json workflow document to
         }
     }
 }
-}
 ```
 
 You should expect a 201 response with an empty body.  The `Location` header
