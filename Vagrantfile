@@ -36,7 +36,9 @@ Vagrant::configure("2") do |config|
   config.vm.provision 'pip install tox',            type: "shell", inline: "pip install tox"
   config.vm.provision 'set postgres auth-method',   type: "shell", inline: 'echo -e "local all all trust\nhost all all 127.0.0.1/32 trust" > /etc/postgresql/9.3/main/pg_hba.conf && service postgresql restart'
   config.vm.provision 'dropdb ptero_workflow db',   type: "shell", inline: "psql -c 'drop database if exists ptero_workflow;' -U postgres"
+  config.vm.provision 'dropdb shell_command db',    type: "shell", inline: "psql -c 'drop database if exists ptero_shell_command;' -U postgres"
   config.vm.provision 'create ptero_workflow db',   type: "shell", inline: "psql -c 'create database ptero_workflow;' -U postgres"
+  config.vm.provision 'create shell_command db',    type: "shell", inline: "psql -c 'create database ptero_shell_command;' -U postgres"
   config.vm.provision 'launch services',            type: "shell", privileged: false, inline: "cd ~/ptero/services/workflow; tox -re dev -- --logdir=var/log --daemondir=var/run"
 
   if RUN_TESTS
