@@ -33,7 +33,7 @@ Vagrant::configure("2") do |config|
   end
 
   config.vm.provision 'use bash instead of dash',   type: "shell", inline: "update-alternatives --install /bin/sh sh /bin/bash 100"
-  config.vm.provision 'pip install tox',            type: "shell", inline: "pip install tox"
+  config.vm.provision 'pip install tox',            type: "shell", inline: "pip install tox==2.1.1"
   config.vm.provision 'set postgres auth-method',   type: "shell", inline: 'echo -e "local all all trust\nhost all all 127.0.0.1/32 trust" > /etc/postgresql/9.3/main/pg_hba.conf && service postgresql restart'
   config.vm.provision 'dropdb ptero_workflow db',   type: "shell", inline: "psql -c 'drop database if exists ptero_workflow;' -U postgres"
   config.vm.provision 'dropdb shell_command db',    type: "shell", inline: "psql -c 'drop database if exists ptero_shell_command;' -U postgres"
